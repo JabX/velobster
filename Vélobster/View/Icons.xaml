@@ -1,0 +1,49 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Vélobster.View">
+
+    <Style x:Key="BikeIcon" TargetType="PathIcon">
+        <Setter Property="Data" 
+                Value="M37.8,0.8c-1.2-0.5-2.5-0.8-3.8-0.8c-4,0-7.6,2.4-9.2,6.1c-2.1,5.1,0.3,10.9,5.4,13c1.2,0.5,2.5,0.8,3.8,0.8
+	                   c4,0,7.6-2.4,9.2-6.1C45.3,8.7,42.9,2.9,37.8,0.8z M37.9,18.1l-3-7.1l7.1,2.9C41.1,15.7,39.7,17.2,37.9,18.1z M31,18.4l3-7.1l3,7.1
+	                   c-0.9,0.3-1.9,0.5-3,0.5C33,18.9,32,18.8,31,18.4z M25.6,7l7.1,3l-7.1,2.9C24.9,11.1,24.9,9,25.6,7z M30.1,1.9l3,7.1L26,6.1
+	                   C26.9,4.3,28.3,2.8,30.1,1.9z M37,1.6l-3,7.1l-3-7.1C32,1.2,33,1.1,34,1.1C35,1.1,36,1.2,37,1.6z M42.1,6.1l-7.1,2.9l3-7.1
+	                   C39.8,2.9,41.2,4.4,42.1,6.1z M33.1,10.9l-3,7.1c-1.9-0.9-3.3-2.4-4.2-4.2L33.1,10.9z M35.3,10l7.1-2.9c0.6,1.9,0.7,3.9,0,5.9
+	                   L35.3,10z" />
+    </Style>
+
+    <Style x:Key="StandIcon" TargetType="PathIcon">
+        <Setter Property="Data" 
+                Value="M30.3,12v8h-1.4V0.1h4.8c2,0,3.6,0.5,4.7,1.4s1.6,2.3,1.6,4.2c0,1.9-0.6,3.4-1.8,4.6S35.4,12,33.2,12H30.3z M30.3,1.3v9.4
+		               h2.8c1.8,0,3.2-0.4,4.1-1.3c0.9-0.9,1.4-2.1,1.4-3.6c0-3-1.7-4.5-5.2-4.5H30.3z" />
+    </Style>
+
+    <Style x:Key="StationIcon" TargetType="Path">
+        <Setter Property="Margin" Value="-20,-60" />
+    </Style>
+
+    <Style x:Key="StationText" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+        <Setter Property="TextAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="SemiLight" />
+        <Setter Property="Margin" Value="-20,-68,0,0" />
+    </Style>
+    
+    <Style x:Key="LocationIcon" TargetType="Path">
+        <Setter Property="Fill" Value="#0075A1" />
+        <Setter Property="Data">
+            <Setter.Value>
+                <GeometryGroup>
+                    <EllipseGeometry Center="0,0" RadiusX="30" RadiusY="30" />
+                    <EllipseGeometry Center="0,0" RadiusX="24" RadiusY="24" />
+                    <EllipseGeometry Center="0,0" RadiusX="20" RadiusY="20" />
+                </GeometryGroup>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

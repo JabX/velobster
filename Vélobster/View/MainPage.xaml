@@ -1,0 +1,91 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ViewModel="using:Vélobster.ViewModel"
+    xmlns:Converter="using:Vélobster.Converter"
+    xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
+    x:Class="Vélobster.View.MainPage"
+    mc:Ignorable="d">
+    
+    <Page.DataContext>
+        <ViewModel:MapViewModel x:Name="mapViewModel" />
+    </Page.DataContext>
+    
+    <Page.Resources>
+        <ResourceDictionary>
+            <Converter:AmountToColor x:Key="amountToColor" />
+            <Converter:ZoomToVisibility x:Key="zoomToVisibility" />
+            <Converter:DisplayedDataToVisibility x:Key="displayedDataToVisibility" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Page.BottomAppBar>
+        <CommandBar Background="#961619" Foreground="White">
+            <AppBarButton Label="Vélos" Foreground="White" Click="Switch_Click" Visibility="{Binding DisplayedData, Converter={StaticResource displayedDataToVisibility}, ConverterParameter=Bikes}">
+                <AppBarButton.Icon>
+                    <PathIcon Style="{StaticResource BikeIcon}" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Places" Foreground="White" Click="Switch_Click" Visibility="{Binding DisplayedData, Converter={StaticResource displayedDataToVisibility}, ConverterParameter=Stands}">
+                <AppBarButton.Icon>
+                    <PathIcon Style="{StaticResource StandIcon}" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarSeparator Foreground="White" />
+            <AppBarButton Icon="Refresh" Label="Actualiser" Foreground="White" />
+            <AppBarButton Icon="Map" Label="Ma position" Foreground="White" Click="Location_Click"/>
+            <AppBarButton Icon="Favorite" Label="Favoris" Foreground="White" />
+        </CommandBar>
+    </Page.BottomAppBar>
+    
+    <Grid>
+        <Maps:MapControl x:Name="mainMap"
+                         RotateInteractionMode="Disabled"
+                         DataContext="{Binding}"
+                         CenterChanged="mainMap_ZoomOrCenterChanged"
+                         ZoomLevelChanged="mainMap_ZoomOrCenterChanged">
+            <Maps:MapItemsControl x:Name="mapStations" ItemsSource="{Binding Stations}">
+                <Maps:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.Resources>
+                                <ViewModel:DisplayedDataViewModel x:Key="ddvm"
+                                                              AvailableBikes="{Binding AvailableBikes}"
+                                                              AvailableStands="{Binding AvailableStands}"
+                                                              DisplayedData="{Binding Path=DataContext.DisplayedData, ElementName=mainMap}" />
+                            </Grid.Resources>
+                            <Path Fill="{Binding Value, Source={StaticResource ddvm}, Converter={StaticResource amountToColor}}"
+                                  Data="M44.7,15.6C41.7,4.6,31.8-3,20.5-3C9.2-3-0.7,4.6-3.7,15.6c-1.5,5.7-0.9,11.2,1,16.6 c1.9,5.8,5.1,11,8.9,15.7c4,5.1,9.2,9.9,14.3,14c5.1-4.1,10.3-8.9,14.3-14c3.8-4.8,6.9-9.9,8.9-15.7C45.5,26.8,46.2,21.3,44.7,15.6z"
+                                  Style="{StaticResource StationIcon}" />
+                            <TextBlock Maps:MapControl.Location="{Binding Position}"
+                                       Text="{Binding Value, Source={StaticResource ddvm}}"
+                                       Style="{StaticResource StationText}">
+                            </TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </Maps:MapItemsControl.ItemTemplate>
+            </Maps:MapItemsControl>
+            <Path Style="{StaticResource LocationIcon}"
+                  Maps:MapControl.Location="{Binding Location}" />
+        </Maps:MapControl>
+        <Grid Background="#A12124" 
+              Visibility="{Binding Path=ZoomLevel, ElementName=mainMap, Converter={StaticResource zoomToVisibility}}"
+              Height="50"
+              VerticalAlignment="Top"
+                    Padding="10">
+            <TextBlock Text="Vous êtes trop loin !" 
+                       Foreground="White" 
+                       FontSize="20"
+                       FontWeight="SemiLight" />
+            <Button Content="Zoomer"
+                    Foreground="White"
+                    Click="ZoomIn_Click" 
+                    HorizontalAlignment="Right" />
+        </Grid>
+    </Grid>
+</Page>
