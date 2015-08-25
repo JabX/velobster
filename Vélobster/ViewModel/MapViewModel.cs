@@ -35,13 +35,13 @@ namespace Vélobster.ViewModel
         public Geopoint Location
         {
             get { return location; }
-            set { location = value; OnPropertyChanged(nameof(Location)); } 
+            set { location = value; OnPropertyChanged(nameof(Location)); }
         }
 
         private HashSet<Station> stationSet = new HashSet<Station>();
 
         private ObservableList<Station> stations = new ObservableList<Station>();
-        public ObservableList<Station> Stations 
+        public ObservableList<Station> Stations
         {
             get { return stations; }
             set { stations = value; OnPropertyChanged(nameof(Stations)); }
@@ -61,7 +61,7 @@ namespace Vélobster.ViewModel
         Timer timer;
         public void RefreshDisplayedStations(MapControl map)
         {
-            if (map.ZoomLevel >= Config.MinZoom)
+            if (map.ZoomLevel >= Config.MinZoom && AllStations != null)
             {
                 if (!BlockRefresh)
                 {
