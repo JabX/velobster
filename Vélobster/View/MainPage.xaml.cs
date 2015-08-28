@@ -2,8 +2,6 @@
 using Vélobster.Provider;
 using Vélobster.Util;
 using Windows.Devices.Geolocation;
-using Windows.UI.ViewManagement;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -15,13 +13,6 @@ namespace Vélobster.View
         public MainPage()
         {
             InitializeComponent();
-
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.BackgroundColor = AppColor.Main;
-            titleBar.ForegroundColor = Colors.White;
-            titleBar.ButtonBackgroundColor = AppColor.Main;
-            titleBar.ButtonForegroundColor = Colors.White;
-
 
             mainMap.MapServiceToken = "McriANNF5FTINRW5ZTFc~dQWfJ3dVZv9P-Bc-CYkgOA~Au4RFUJBhI5ab7oDdjm_6UTWkf1_vSvkuJ_JxTJxdHGxKvzjN678jh_T_oWWtXBs";
             mainMap.Center = MapUtils.NotreDame;

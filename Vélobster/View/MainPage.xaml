@@ -25,21 +25,21 @@
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <CommandBar Background="#961619" Foreground="White">
-            <AppBarButton Label="Vélos" Foreground="White" Click="Switch_Click" Visibility="{Binding DisplayedData, Converter={StaticResource displayedDataToVisibility}, ConverterParameter=Bikes}">
+        <CommandBar>
+            <AppBarButton Label="Vélos" Click="Switch_Click" Visibility="{Binding DisplayedData, Converter={StaticResource displayedDataToVisibility}, ConverterParameter=Bikes}">
                 <AppBarButton.Icon>
                     <PathIcon Style="{StaticResource BikeIcon}" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Places" Foreground="White" Click="Switch_Click" Visibility="{Binding DisplayedData, Converter={StaticResource displayedDataToVisibility}, ConverterParameter=Stands}">
+            <AppBarButton Label="Places" Click="Switch_Click" Visibility="{Binding DisplayedData, Converter={StaticResource displayedDataToVisibility}, ConverterParameter=Stands}">
                 <AppBarButton.Icon>
                     <PathIcon Style="{StaticResource StandIcon}" />
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarSeparator Foreground="White" />
-            <AppBarButton Icon="Refresh" Label="Actualiser" Foreground="White" />
-            <AppBarButton Icon="Map" Label="Ma position" Foreground="White" Click="Location_Click"/>
-            <AppBarButton Icon="Favorite" Label="Favoris" Foreground="White" />
+            <AppBarSeparator />
+            <AppBarButton Icon="Refresh" Label="Actualiser" />
+            <AppBarButton Icon="Map" Label="Ma position" Click="Location_Click"/>
+            <AppBarButton Icon="Favorite" Label="Favoris" />
         </CommandBar>
     </Page.BottomAppBar>
     
@@ -73,17 +73,15 @@
             <Path Style="{StaticResource LocationIcon}"
                   Maps:MapControl.Location="{Binding Location}" />
         </Maps:MapControl>
-        <Grid Background="#A12124" 
+        <Grid Background="WhiteSmoke" 
               Visibility="{Binding Path=ZoomLevel, ElementName=mainMap, Converter={StaticResource zoomToVisibility}}"
               Height="50"
               VerticalAlignment="Top"
                     Padding="10">
             <TextBlock Text="Vous êtes trop loin !" 
-                       Foreground="White" 
                        FontSize="20"
                        FontWeight="SemiLight" />
             <Button Content="Zoomer"
-                    Foreground="White"
                     Click="ZoomIn_Click" 
                     HorizontalAlignment="Right" />
         </Grid>
