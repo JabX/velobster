@@ -7,7 +7,8 @@
     xmlns:Converter="using:Vélobster.Converter"
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     x:Class="Vélobster.View.MainPage"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="Black">
     
     <Page.DataContext>
         <ViewModel:MapViewModel x:Name="mapViewModel" />
@@ -70,10 +71,11 @@
                     </DataTemplate>
                 </Maps:MapItemsControl.ItemTemplate>
             </Maps:MapItemsControl>
-            <Path Style="{StaticResource LocationIcon}"
+            <Path x:Name="locationPin"
+                  Style="{StaticResource LocationIcon}"
                   Maps:MapControl.Location="{Binding Location}" />
         </Maps:MapControl>
-        <Grid Background="WhiteSmoke" 
+        <Grid Background="{ThemeResource SystemChromeMediumColor}" 
               Visibility="{Binding Path=ZoomLevel, ElementName=mainMap, Converter={StaticResource zoomToVisibility}}"
               Height="50"
               VerticalAlignment="Top"
