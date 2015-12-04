@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
 using Vélobster.Model;
 using Vélobster.Util;
 using Windows.Devices.Geolocation;
 using Windows.UI.Xaml.Controls.Maps;
 
-namespace Vélobster.ViewModel
-{
+namespace Vélobster.ViewModel {
     class MapViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
