@@ -8,7 +8,7 @@
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     x:Class="Vélobster.View.MainPage"
     mc:Ignorable="d"
-    Background="Black">
+    Background="White">
     
     <Page.DataContext>
         <ViewModel:MapViewModel x:Name="mapViewModel" />
@@ -19,6 +19,7 @@
             <Converter:AmountToColor x:Key="amountToColor" />
             <Converter:ZoomToVisibility x:Key="zoomToVisibility" />
             <Converter:DisplayedDataToVisibility x:Key="displayedDataToVisibility" />
+            <Converter:BoolToVisibility x:Key="boolToVisibility" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Icons.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -38,13 +39,14 @@
                 </AppBarButton.Icon>
             </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton Icon="Refresh" Label="Actualiser" />
+            <AppBarButton Icon="Refresh" Label="Actualiser" Click="Refresh_Click" />
             <AppBarButton Icon="Map" Label="Ma position" Click="Location_Click"/>
-            <AppBarButton Icon="Favorite" Label="Favoris" />
         </CommandBar>
     </Page.BottomAppBar>
     
     <Grid>
+        
+        <!-- Map section -->
         <Maps:MapControl x:Name="mainMap"
                          RotateInteractionMode="Disabled"
                          DataContext="{Binding}"
@@ -55,10 +57,11 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.Resources>
-                                <ViewModel:DisplayedDataViewModel x:Key="ddvm"
-                                                              AvailableBikes="{Binding AvailableBikes}"
-                                                              AvailableStands="{Binding AvailableStands}"
-                                                              DisplayedData="{Binding Path=DataContext.DisplayedData, ElementName=mainMap}" />
+                                <ViewModel:DisplayedDataViewModel 
+                                    x:Key="ddvm"
+                                    AvailableBikes="{Binding AvailableBikes}"
+                                    AvailableStands="{Binding AvailableStands}"
+                                    DisplayedData="{Binding Path=DataContext.DisplayedData, ElementName=mainMap}" />
                             </Grid.Resources>
                             <Path Fill="{Binding Value, Source={StaticResource ddvm}, Converter={StaticResource amountToColor}}"
                                   Data="M44.7,15.6C41.7,4.6,31.8-3,20.5-3C9.2-3-0.7,4.6-3.7,15.6c-1.5,5.7-0.9,11.2,1,16.6 c1.9,5.8,5.1,11,8.9,15.7c4,5.1,9.2,9.9,14.3,14c5.1-4.1,10.3-8.9,14.3-14c3.8-4.8,6.9-9.9,8.9-15.7C45.5,26.8,46.2,21.3,44.7,15.6z"
@@ -75,11 +78,13 @@
                   Style="{StaticResource LocationIcon}"
                   Maps:MapControl.Location="{Binding Location}" />
         </Maps:MapControl>
+        
+        <!-- Out of range section -->
         <Grid Background="{ThemeResource SystemChromeMediumColor}" 
               Visibility="{Binding Path=ZoomLevel, ElementName=mainMap, Converter={StaticResource zoomToVisibility}}"
               Height="50"
               VerticalAlignment="Top"
-                    Padding="10">
+              Padding="10">
             <TextBlock Text="Vous êtes trop loin !" 
                        FontSize="20"
                        FontWeight="SemiLight" />
@@ -87,5 +92,18 @@
                     Click="ZoomIn_Click" 
                     HorizontalAlignment="Right" />
         </Grid>
+        
+        <!-- Loading section -->
+        <Grid Background="Black" Opacity="0.5"
+              Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibility}}" />
+        <StackPanel VerticalAlignment="Center"
+                    Visibility="{Binding IsLoading, Converter={StaticResource boolToVisibility}}">
+            <ProgressRing IsActive="True" Width="60" Height="60" Foreground="White" />
+            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" 
+                       HorizontalAlignment="Center" 
+                       Text="En attente des données..." 
+                       Foreground="White"/>
+        </StackPanel>
+        
     </Grid>
 </Page>

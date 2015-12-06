@@ -3,21 +3,29 @@ using Vélobster.Provider;
 using Vélobster.Util;
 using Windows.Devices.Geolocation;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
 
-namespace Vélobster.View
+namespace Vélobster.View 
 {
     public sealed partial class MainPage : Page
     {
         private bool isLoaded = false;
         private bool isLocated = false;
 
+        private readonly LocationProvider locationProvider;
+
         public MainPage()
         {
             InitializeComponent();
+
+            Action<Geopoint> setLocation = location => mapViewModel.Location = location;
+            Func<CoreDispatcher> getDispatcher = () => Dispatcher;
+
+            locationProvider = new LocationProvider(getDispatcher, setLocation);
 
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
             titleBar.BackgroundColor = Colors.Black;
@@ -40,22 +48,28 @@ namespace Vélobster.View
 
         async private void getLocation()
         {
-            mapViewModel.Location = await LocationProvider.GetLocation();
-            isLocated = true;
-            locationPin.Visibility = Visibility.Visible;
-
-            if (mapViewModel.Location != null)
+            isLocated = false;
+            await locationProvider.GetLocation();
+ 
+            if (mapViewModel.Location != null) 
+            {
+                isLocated = true;
+                locationPin.Visibility = Visibility.Visible;
                 setLocation(mapViewModel.Location);
+            }
         }
 
         async private void setLocation(Geopoint point)
         {
-            await mainMap.TrySetViewAsync(point, Config.CenterZoom);
+            if(isLocated)
+                await mainMap.TrySetViewAsync(point, Config.CenterZoom);
         }
 
         async private void loadApi()
         {
+            mapViewModel.IsLoading = true;
             mapViewModel.AllStations = await StationProvider.GetStationData();
+            mapViewModel.IsLoading = false;
             isLoaded = true;
             mapViewModel.RefreshDisplayedStations(mainMap);
         }
@@ -80,6 +94,11 @@ namespace Vélobster.View
         async private void ZoomIn_Click(object sender, RoutedEventArgs e)
         {
             await mainMap.TrySetViewAsync(mainMap.Center, Config.MinZoom);
+        }
+
+        private void Refresh_Click(object sender, RoutedEventArgs e) 
+        {
+            loadApi();
         }
     }
 }

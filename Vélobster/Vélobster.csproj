@@ -98,6 +98,7 @@
     </Compile>
     <Compile Include="AppColor.cs" />
     <Compile Include="Converter\AmountToColor.cs" />
+    <Compile Include="Converter\BoolToVisibility.cs" />
     <Compile Include="Converter\DisplayedDataToVisibility.cs" />
     <Compile Include="Model\StationData.cs" />
     <Compile Include="Model\AllStationList.cs" />

@@ -1,24 +1,40 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
+using Windows.UI.Core;
 
 namespace Vélobster.Provider
 {
-    public static class LocationProvider
+    public class LocationProvider 
     {
-        async public static Task<Geopoint> GetLocation()
+        private Func<CoreDispatcher> getDispatcher;
+        private Action<Geopoint> setLocation;
+
+        public LocationProvider(Func<CoreDispatcher> getDispatcher, Action<Geopoint> setLocation) 
+        {
+            this.getDispatcher = getDispatcher;
+            this.setLocation = setLocation;
+        }
+
+        async public Task GetLocation() 
         {
             var accessStatus = await Geolocator.RequestAccessAsync();
 
-            if (accessStatus == GeolocationAccessStatus.Allowed)
+            if (accessStatus == GeolocationAccessStatus.Allowed) 
             {
-                var geoposition = new Geolocator();
+                var geoposition = new Geolocator { MovementThreshold = 5 };
                 var position = await geoposition.GetGeopositionAsync();
-                return position.Coordinate.Point;
-                
+                setLocation(position.Coordinate.Point);
+                geoposition.PositionChanged += OnPositionChanged;
             }
-            else
-                return null;
+        }
+        
+        async private void OnPositionChanged(Geolocator sender, PositionChangedEventArgs e) 
+        {
+            await getDispatcher().RunAsync(CoreDispatcherPriority.Normal, () => 
+            {
+                setLocation(e.Position.Coordinate.Point);
+            });
         }
     }
 }

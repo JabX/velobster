@@ -29,7 +29,7 @@ namespace Vélobster.ViewModel {
             set { mapZoom = value; OnPropertyChanged(nameof(MapZoom)); }
         }
 
-        private Geopoint location;
+        private Geopoint location = MapUtils.NotreDame;
         public Geopoint Location
         {
             get { return location; }
@@ -53,6 +53,13 @@ namespace Vélobster.ViewModel {
         }
 
         public AllStationList AllStations { get; set; }
+
+        private bool isLoading = false;
+        public bool IsLoading
+        {
+            get { return isLoading; }
+            set { isLoading = value; OnPropertyChanged(nameof(IsLoading)); }
+        }
 
         public void RefreshDisplayedStations(MapControl map)
         {
